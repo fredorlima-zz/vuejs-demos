@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Vue.JS - Events (On)</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+</head>
+<body>
+
+    <div id="app-6">
+        <button v-on:click="counter += 1">Adiciona 1</button>
+        <p>Quantas vezes o botão acima foi clicado: {{ counter }}</p>
+
+        <button v-on:click="buttonClick">Não aperte</button>
+        <p>{{ message }}</p>
+    </div>
+
+
+    <script>
+    var app6 = new Vue({
+        el: '#app-6',
+        data: {
+            message: 'Olá Vue!',
+            counter: 0
+        },
+        methods: {
+            buttonClick: function () {
+                this.message = "FDP teimoso..."
+            }
+        }
+    })
+    </script>
+
+</body>
+</html>

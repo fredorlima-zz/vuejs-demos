@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Vue.JS - Watchers</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios@0.12.0/dist/axios.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/lodash@4.13.1/lodash.min.js"></script>
+</head>
+<body>
+
+    <div id="app-8">
+        <p>
+            Faça uma pergunta do tipo sim/não:
+            <input v-model="question">
+        </p>
+        <p>{{ answer }}</p>
+    </div>
+
+
+    <script>
+    var app8 = new Vue({
+        el: '#app-8',
+        data: {
+            question: '',
+            answer: 'Eu não posso responder até que você faça uma pergunta!'
+        },
+        watch: {
+            // sempre que a pergunta mudar, essa função será executada
+            question: function (newQuestion, oldQuestion) {
+                this.answer = 'Esperando você parar de escrever...'
+                this.getAnswer()
+            }
+        },
+        methods: {
+            // _.debounce é uma função fornecida pelo lodash para limitar
+            // a frequência que uma operação complexa pode ser executada.
+            // Neste caso, queremos limitar a frequência com que acessamos
+            // a yesno.wtf/api, esperando que o usuário termine completamente
+            // a digitação antes de realizar a chamada Ajax.
+            getAnswer: _.debounce(
+                function () {
+                    var vm = this
+                    if (vm.question.indexOf('?') === -1) {
+                        vm.answer = 'Perguntas geralmente têm uma interrogação. ;-)'
+                        return
+                    }
+                    vm.answer = 'Pensando...'
+                    axios.get('https://yesno.wtf/api')
+                    .then(function (response) {
+                        vm.answer = response.data.answer === 'yes' ? 'Sim.' :
+                        response.data.answer === 'no' ? 'Não.' : 'Talvez!'
+                    })
+                    .catch(function (error) {
+                        vm.answer = 'Erro! Não pode executar a API. ' + error
+                    })
+                },
+                // Este é o número de milissegundos que aguardamos para
+                // que o usuário pare de digitar
+                500
+            )
+        }
+    })
+    </script>
+
+</body>
+</html>

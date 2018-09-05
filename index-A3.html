@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Vue.JS - Condicionais</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+</head>
+<body>
+
+    <div id="app-3">
+        <p v-if="seen">Agora você me viu</p>
+        <p v-show="seen">Olha eu aqui de novo</p>
+    </div>
+
+    <script>
+    var app3 = new Vue({
+        el: '#app-3',
+        data: {
+            seen: true
+        }
+    })
+    </script>
+
+</body>
+</html>
